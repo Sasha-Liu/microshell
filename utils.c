@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:36:35 by sasha             #+#    #+#             */
-/*   Updated: 2023/05/01 19:35:16 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 20:19:13 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,11 @@ void	ft_child_exec(int i, char **argv, int fd[2])
 		ft_close_fd(fd);
 		exit(1);
 	}
-	//printf("args[0]: %s\nargs[1]: %s\n", args[0], args[1]);
+	//ft_print_args(args);
+	if (fd[0] != 0)
+		dup2(fd[0], 0);
+	if (fd[1] != 1)
+		dup2(fd[1], 1);
 	execve(args[0], args, environ);
 	write(2, "error: cannot execute ", 22);
 	write(2, args[0], ft_strlen(args[0]));

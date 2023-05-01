@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:59:32 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 19:34:55 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 20:17:41 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,17 @@ int	main(int argc, char **argv)
 		i = ft_increment_i(i, argv);
 		cmd++;
 	}
+}
+
+void	ft_print_args(char **args)
+{
+	int	i;
+	
+	i = 0;
+	while (args[i])
+	{
+		printf("args[%i]: %s\n", i, args[i]);
+		i++;
+	}
+	printf("(null)\n");
 }
