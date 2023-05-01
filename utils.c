@@ -1,27 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   microshell.h                                       :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/27 11:56:02 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 12:38:57 by sasha            ###   ########.fr       */
+/*   Created: 2023/05/01 12:36:35 by sasha             #+#    #+#             */
+/*   Updated: 2023/05/01 12:44:24 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MICROSHELL_H
-# define MICROSHELL_H
+#include "microshell.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <string.h>
-# include <sys/types.h>
-# include <sys/wait.h>
+int	ft_strlen(char *s)
+{
+	int	i;
 
-int	ft_strlen(char *s);
-int	cd(int argc, char **argv);
+	i = 0;
+	while (s[i])
+	{
+		i++;
+	}
+	return (i);
+}
 
-
-
-#endif
+int	cd(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		write(2, "error: cd: bad arguments\n", 25);
+		return (1);
+	}
+	if (chdir(argv[1]))
+	{
+		write(2, "error: cd: cannot change directory to ", 38);
+		write(2, argv[1], ft_strlen(argv[1]));
+		write(2, "\n", 1);
+		return (1);
+	}
+	return (0);
+}
