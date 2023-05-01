@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:36:35 by sasha             #+#    #+#             */
-/*   Updated: 2023/05/01 20:36:41 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 20:42:50 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	ft_child_exec(int i, char **argv, int fd[2])
 	extern char	**environ;
 	char		**args;
 	
-	//write(2, "child\n", 6);
 	args = ft_get_args(i, argv);
 	if (!args)
 	{
@@ -111,9 +110,6 @@ void	ft_child_exec(int i, char **argv, int fd[2])
 	exit(1);
 }
 
-/*
-	increment i, free resource
-*/
 void	ft_parent(int fd[2])
 {
 	int	status;
@@ -197,25 +193,4 @@ void	ft_close_fd(int fd[2])
 		close(fd[0]);
 	if (fd[1] != 1)
 		close(fd[1]);
-}
-
-/*
-	exec the cmd if it's the only one
-*/
-void	ft_exec_one(int i, char **argv)
-{
-	char		**args;
-	extern char	**environ;
-	
-	if (!ft_is_first(i, argv) || !ft_is_last(i, argv))
-		return ;
-	args = ft_get_args(i, argv);
-	if (!args)
-		exit(1);
-	execve(args[0], args, environ);
-	write(2, "error: cannot execute ", 22);
-	write(2, args[0], ft_strlen(args[0]));
-	write(2, "\n", 1);
-	free(args);
-	exit(0);
 }
