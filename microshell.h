@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:56:02 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 20:15:56 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 20:26:48 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int		ft_is_last(int i, char **argv);
 void	ft_close_fd(int fd[2]);
 void	ft_exec_one(int i, char **argv);
 void	ft_print_args(char **args);
+int		ft_increment_cmd(int i, char **argv, int cmd);
 
 
 

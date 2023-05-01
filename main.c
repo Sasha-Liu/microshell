@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:59:32 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 20:17:41 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 20:38:46 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ int	main(int argc, char **argv)
 	{
 		exit(cd(argc - 1, argv + 1));
 	}
-	//one single cmd
 	i = 1;
 	cmd = 0;
-	ft_exec_one(i, argv);
 	while (argv[i])
 	{
 		ft_set_pipe(i, argv, cmd, fd);
@@ -44,19 +42,6 @@ int	main(int argc, char **argv)
 			ft_parent(fd);
 		}
 		i = ft_increment_i(i, argv);
-		cmd++;
+		cmd = ft_increment_cmd(i, argv, cmd);
 	}
-}
-
-void	ft_print_args(char **args)
-{
-	int	i;
-	
-	i = 0;
-	while (args[i])
-	{
-		printf("args[%i]: %s\n", i, args[i]);
-		i++;
-	}
-	printf("(null)\n");
 }
