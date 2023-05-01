@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:59:32 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 15:57:23 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 19:24:57 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	main(int argc, char **argv)
 {
 	int		i;
-	int		fd[4];
+	int		fd[6];
 	int		pid;
-	char	**args;
+	int		cmd;
 	
 	if (argc == 1)
 	{
@@ -27,29 +27,23 @@ int	main(int argc, char **argv)
 	{
 		exit(cd(argc - 1, argv + 1));
 	}
+	//one single cmd
 	i = 1;
-	//pipe(fd);
+	cmd = 0;
 	while (argv[i])
 	{
-		args = ft_get_args(i, argv);
-		if (!args)
-			exit(1);
-		pipe(fd + (i % 2) * 2);
+		ft_set_pipe(i, argv, cmd, fd);
 		pid = fork();
 		if (pid == 0)
 		{
-			ft_child_exec(i, argv, args, fd);
+			ft_child_exec(i, argv, fd);
 		}
 		else
 		{
-			//wait for the child to terminate
-			//augument i 
-			//read from pipe
-			dup2(fd[0], 0);
-			//write to pipe or stdout
-			
+			ft_parent(fd);
 		}
-		i++;
+		i = ft_increment_i(i, argv);
+		cmd++;
 	}
 	
 	

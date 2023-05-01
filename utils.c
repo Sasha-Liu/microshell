@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:36:35 by sasha             #+#    #+#             */
-/*   Updated: 2023/05/01 15:44:23 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 19:27:56 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,51 +70,115 @@ char	**ft_get_args(int i, char **argv)
 	return (p);
 }
 
-void	ft_increment_i(int *i, char **argv)
+int	ft_increment_i(int i, char **argv)
 {
-	while (argv[*i] && strcmp("|", argv[*i]) && strcmp(";", argv[*i]))
-	{
-		*i++;
-	}
-	if (!(argv[*i]))
-		return ;
-	(*i)++;
+	while (argv[i] && strcmp("|", argv[i]) && strcmp(";", argv[i]))
+		i++;
+	if (argv[i])
+		i++;
+	return (i);
 }
 
-void	ft_child_exec(int i, char **argv, char **args, int fd[2])
+void	ft_child_exec(int i, char **argv, int fd[2])
 {
 	extern char	**environ;
+	char		**args;
 	
-	//if is the first cmd or preceded by ;
-	if (i == 1 || !strcmp(";", argv[i - 1]))
-		;
-	else
-		dup2(fd[0], 0);
-	dup2(fd[1], 1);
-	execve(args[1], args, environ);
+	args = ft_get_args(i, argv);
+	if (!args)
+	{
+		ft_close_fd(fd);
+		exit(1);
+	}
+	printf("args[0]: %s\nargs[1]: %s\n", args[0], args[1]);
+	execve(args[0], args, environ);
 	write(2, "error: cannot execute ", 22);
 	write(2, args[0], ft_strlen(args[0]));
 	write(2, "\n", 1);
+	ft_close_fd(fd);
+	free(args);
 	exit(1);
 }
 
 /*
 	increment i, free resource
 */
-void	ft_parent(int i, char **argv, char **args, int fd[2])
+void	ft_parent(int fd[2])
 {
 	int	status;
-	//int	temp[2];
 	
-	if (i == 1 || !strcmp(";", argv[i - 1]))
-		close(fd[0]);
-	
-	close(fd[1]);
+	ft_close_fd(fd);
 	waitpid(-1, &status, 0);
-	//pipe(temp);
-	//read from pipe (store where ?)
+}
+
+void	ft_set_pipe(int i, char **argv, int cmd, int fd[6])
+{
+	if (ft_is_last(i, argv))
+	{
+		fd[1] = 1;
+		if (cmd % 2)
+		{
+			fd[0] = dup(fd[2]);
+			close(fd[2]);
+		}
+		else
+		{
+			fd[0] = dup(fd[4]);
+			close(fd[4]);
+		}
+	}
+	else if (ft_is_first(i, argv))
+	{
+		pipe(fd + 2);
+		fd[0] = 0;
+		fd[1] = dup(fd[3]);
+		close(fd[3]);
+	}
+	else if (cmd % 2)
+	{
+		pipe(fd + 4);
+		fd[0] = dup(fd[2]);
+		fd[1] = dup(fd[5]);
+		close(fd[2]);
+		close(fd[5]);
+	}
+	else
+	{
+		pipe(fd + 2);
+		fd[0] = dup(fd[4]);
+		fd[1] = dup(fd[3]);
+		close(fd[4]);
+		close(fd[3]);
+	}
 	
-	//close read end
-	//reopen pipe
-	//write into pipe or stdout
+}
+
+int	ft_is_first(int i, char **argv)
+{
+	if (i == 1)
+		return (1);
+	if (strcmp(";", argv[i - 1]) == 0)
+		return (1);
+	return (0);
+}
+
+int	ft_is_last(int i, char **argv)
+{
+	while (argv[i] && strcmp(argv[i], "|") && strcmp(argv[i], ";"))
+	{
+		i++;
+	}
+	if (argv[i] == NULL)
+		return (1);
+	if (strcmp(argv[i], ";") == 0)
+		return (1);
+	return (0);
+}
+
+void	ft_close_fd(int fd[2])
+{
+	if (fd[0] != 0)
+		close(fd[0]);
+	if (fd[1] != 1)
+		close(fd[1]);
 }
