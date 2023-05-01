@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:59:32 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 20:38:46 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 21:09:58 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	main(int argc, char **argv)
 	{
 		return (0);
 	}
-	if (strcmp("cd", argv[1]) == 0)
-	{
-		exit(cd(argc - 1, argv + 1));
-	}
+	// if (strcmp("cd", argv[1]) == 0)
+	// {
+	// 	exit(cd(argc - 1, argv + 1));
+	// }
 	i = 1;
 	cmd = 0;
 	while (argv[i])
@@ -44,4 +44,5 @@ int	main(int argc, char **argv)
 		i = ft_increment_i(i, argv);
 		cmd = ft_increment_cmd(i, argv, cmd);
 	}
+	ft_close_std();
 }

@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:56:02 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 20:41:31 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 21:09:48 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@
 # include <stdio.h>
 
 int		ft_strlen(char *s);
-int		cd(int argc, char **argv);
+int		cd(char **args, int fd[2]);
 
 char	**ft_get_args(int i, char **argv);
 void	ft_set_pipe(int i, char **argv, int cmd, int fd[6]);
 void	ft_close_fd(int fd[2]);
+void	ft_close_std(void);
 
 void	ft_child_exec(int i, char **argv, int fd[2]);
 void	ft_parent(int fd[2]);

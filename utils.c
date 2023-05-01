@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:36:35 by sasha             #+#    #+#             */
-/*   Updated: 2023/05/01 20:42:50 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 21:11:17 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,34 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
-int	cd(int argc, char **argv)
+int	cd(char **args, int fd[2])
 {
-	if (argc != 2)
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	if (i != 2)
 	{
 		write(2, "error: cd: bad arguments\n", 25);
+		free(args);
+		ft_close_fd(fd);
+		ft_close_std();
 		return (1);
 	}
-	if (chdir(argv[1]))
+	if (chdir(args[1]))
 	{
 		write(2, "error: cd: cannot change directory to ", 38);
-		write(2, argv[1], ft_strlen(argv[1]));
+		write(2, args[1], ft_strlen(args[1]));
 		write(2, "\n", 1);
+		free(args);
+		ft_close_fd(fd);
+		ft_close_std();
 		return (1);
 	}
+	free(args);
+	ft_close_fd(fd);
+	ft_close_std();
 	return (0);
 }
 
@@ -101,11 +115,14 @@ void	ft_child_exec(int i, char **argv, int fd[2])
 		dup2(fd[0], 0);
 	if (fd[1] != 1)
 		dup2(fd[1], 1);
+	if (strcmp("cd", args[0]) == 0)
+		exit(cd(args, fd));
 	execve(args[0], args, environ);
 	write(2, "error: cannot execute ", 22);
 	write(2, args[0], ft_strlen(args[0]));
 	write(2, "\n", 1);
 	ft_close_fd(fd);
+	ft_close_std();
 	free(args);
 	exit(1);
 }
@@ -193,4 +210,11 @@ void	ft_close_fd(int fd[2])
 		close(fd[0]);
 	if (fd[1] != 1)
 		close(fd[1]);
+}
+
+void	ft_close_std(void)
+{
+	close(0);
+	close(1);
+	close(2);
 }
