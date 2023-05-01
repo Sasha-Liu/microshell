@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:59:32 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 19:24:57 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 19:34:55 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	main(int argc, char **argv)
 	//one single cmd
 	i = 1;
 	cmd = 0;
+	ft_exec_one(i, argv);
 	while (argv[i])
 	{
 		ft_set_pipe(i, argv, cmd, fd);
@@ -45,6 +46,4 @@ int	main(int argc, char **argv)
 		i = ft_increment_i(i, argv);
 		cmd++;
 	}
-	
-	
 }

@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 11:56:02 by hsliu             #+#    #+#             */
-/*   Updated: 2023/05/01 19:25:25 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 19:35:25 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_set_pipe(int i, char **argv, int cmd, int fd[6]);
 int		ft_is_first(int i, char **argv);
 int		ft_is_last(int i, char **argv);
 void	ft_close_fd(int fd[2]);
+void	ft_exec_one(int i, char **argv);
 
 
 

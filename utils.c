@@ -6,7 +6,7 @@
 /*   By: sasha <sasha@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:36:35 by sasha             #+#    #+#             */
-/*   Updated: 2023/05/01 19:27:56 by sasha            ###   ########.fr       */
+/*   Updated: 2023/05/01 19:35:16 by sasha            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_child_exec(int i, char **argv, int fd[2])
 		ft_close_fd(fd);
 		exit(1);
 	}
-	printf("args[0]: %s\nargs[1]: %s\n", args[0], args[1]);
+	//printf("args[0]: %s\nargs[1]: %s\n", args[0], args[1]);
 	execve(args[0], args, environ);
 	write(2, "error: cannot execute ", 22);
 	write(2, args[0], ft_strlen(args[0]));
@@ -181,4 +181,25 @@ void	ft_close_fd(int fd[2])
 		close(fd[0]);
 	if (fd[1] != 1)
 		close(fd[1]);
+}
+
+/*
+	exec the cmd if its the only one
+*/
+void	ft_exec_one(int i, char **argv)
+{
+	char		**args;
+	extern char	**environ;
+	
+	if (!ft_is_first(i, argv) || !ft_is_last(i, argv))
+		return ;
+	args = ft_get_args(i, argv);
+	if (!args)
+		exit(1);
+	execve(args[0], args, environ);
+	write(2, "error: cannot execute ", 22);
+	write(2, args[0], ft_strlen(args[0]));
+	write(2, "\n", 1);
+	free(args);
+	exit(0);
 }
